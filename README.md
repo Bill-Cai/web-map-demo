@@ -1,6 +1,8 @@
 # Web Map Demo (GeoServer+FastAPI+Leaflet)
 
-说明：
+## 0 说明
+
+项目说明：
 
 - 内容：完成一个Web端的地图服务小案例。
 - 目标：
@@ -14,6 +16,7 @@
 目录：
 
 - [Web Map Demo (GeoServer+FastAPI+Leaflet)](#web-map-demo-geoserverfastapileaflet)
+  - [0 说明](#0-说明)
   - [1 背景介绍](#1-背景介绍)
   - [2 相关技术](#2-相关技术)
     - [2.1 GeoServer](#21-geoserver)
