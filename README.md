@@ -2,7 +2,7 @@
 
 ## 0 说明
 
-项目说明：
+**项目说明：**
 
 - 内容：完成一个Web端的地图服务小案例。
 - 目标：
@@ -13,7 +13,7 @@
 
 代码库：[https://github.com/Bill-Cai/web-map-demo](https://github.com/Bill-Cai/web-map-demo)
 
-目录：
+**目录：**
 
 - [Web Map Demo (GeoServer+FastAPI+Leaflet)](#web-map-demo-geoserverfastapileaflet)
   - [0 说明](#0-说明)
@@ -27,23 +27,31 @@
     - [3.1 GeoServer 使用](#31-geoserver-使用)
       - [3.1.1 Installation](#311-installation)
         - [Step 1. 安装 Java 17](#step-1-安装-java-17)
-        - [Step 2. 运行 GeoServer](#step-2-运行-geoserver)
+        - [Step 2. 安装 GeoServer](#step-2-安装-geoserver)
+        - [Step 3. 运行 GeoServer](#step-3-运行-geoserver)
       - [3.1.2 发布 shapefile](#312-发布-shapefile)
         - [Step 1. Data preparation](#step-1-data-preparation)
         - [Step 2. Creating a new workspace](#step-2-creating-a-new-workspace)
         - [Step 3. Create a store](#step-3-create-a-store)
-        - [Step 3. Creating a layer](#step-3-creating-a-layer)
+        - [Step 4. Creating a layer](#step-4-creating-a-layer)
+        - [Step 5. Layer preview](#step-5-layer-preview)
     - [3.2 FastAPI 后端](#32-fastapi-后端)
       - [3.2.1 Quick Start](#321-quick-start)
-      - [3.2.2 后端代码](#322-后端代码)
+      - [3.2.2 后端实现](#322-后端实现)
+        - [Step 1. 运行](#step-1-运行)
+        - [Step 2. 测试端口](#step-2-测试端口)
     - [3.3 Leaflet 前端](#33-leaflet-前端)
+      - [3.3.1 Leaflet 入门](#331-leaflet-入门)
+      - [3.3.2 前端实现](#332-前端实现)
   - [4 拓展](#4-拓展)
 
 ## 1 背景介绍
 
-随着地理信息技术的快速发展，Web地图服务已经成为各种应用的核心组成部分。Web地图通过将地图数据与Web前端技术结合，向用户展示动态、交互式的地理信息。本项目将使用GeoServer、FastAPI和Leaflet技术构建一个Web地图服务，提供地理数据的可视化展示。通过这一过程，展示新手该如何搭建一个Web端地图应用，并对前后端技术的基本框架有一个初步的认识。
+随着地理信息技术的快速发展，Web地图服务已经成为各种应用的核心组成部分。Web地图通过将地图数据与Web前端技术结合，向用户展示动态、交互式的地理信息。
 
-该案例的目标是让用户熟悉Web地图服务的基本工作原理，掌握如何通过**GeoServer发布地图服务**，通过**后端提供地图数据**，通过**前端地图框架展示数据**，并实现简单的交互功能。
+本项目将使用GeoServer、FastAPI和Leaflet技术构建一个Web地图服务，提供地理数据的可视化展示。通过这一过程，展示如何搭建一个Web端地图应用，以提供对地图服务和前后端开发的基本认识。
+
+该案例的目标是让用户熟悉Web地图服务的基本工作原理，掌握如何通过**GeoServer发布地图服务**，通过**后端提供空间数据**，通过**前端地图框架展示数据**，并实现简单的交互功能。
 
 ## 2 相关技术
 
@@ -53,23 +61,23 @@
 
 ### 2.2 B/S Architecture & Web Application
 
-有关 B/S 和 C/S 架构的定义、概念、应用常见等，可以自行百度，对网页应用前后端有个基本认识即可。
+有关 B/S 架构的定义、概念、优势和应用常见等，可以自行百度，对网页应用和前后端有个基本认识即可。
 
 ### 2.3 FastAPI
 
-[FastAPI](https://fastapi.tiangolo.com/) 是一个用于构建现代Web APIs的高性能框架，基于Python语言构建，能够快速开发高效且易于使用的API。在本案例中，FastAPI将作为后端服务框架，用于提供GeoServer的地图数据接口，并将其传递到前端进行展示。
+[FastAPI](https://fastapi.tiangolo.com/) 是一个用于构建现代Web APIs的高性能框架，基于Python语言构建，能够快速开发高效且易于使用的API。在本案例中，FastAPI将作为后端服务框架，用于提供空间数据查询接口，并将其传递到前端进行展示。
 
 ### 2.4 Leaflet
 
-[Leaflet](https://leafletjs.com/) 是一个轻量级、开源的JavaScript库，用于构建交互式地图应用。它支持从多个来源加载地图数据（包括GeoServer、OpenStreetMap、Google Maps等），并能够在地图上进行标记、绘制图形等操作。在本案例中，Leaflet将用于构建前端地图应用，向用户展示GeoServer提供的地图数据，并提供交互式的地理信息浏览体验。
+[Leaflet](https://leafletjs.com/) 是一个轻量级、开源的JavaScript库，用于构建交互式地图应用。它支持从多个来源加载地图数据（包括GeoServer、OpenStreetMap、Google Maps等），并能够在地图上进行标记、绘制图形等操作。在本案例中，Leaflet将用于构建前端地图应用，向用户展示GeoServer提供的地图数据和FastAPI提供的后端数据，并提供交互式的地理信息浏览体验。
 
 ## 3 案例实现
 
 本案例：
 
-1. 通过 GeoServer 发布一个 Shapefile 文件为地图服务；
-2. 通过 Python 的 FastAPI 库进行后端搭建，对地图服务的请求进行转发，并提供其他数据接口；
-3. 通过前端三件套和 Leaflet 组件完成前端交互地图网页的制作。
+1. 通过 GeoServer 发布一个 Shapefile 文件为网页地图服务（Web Map Service，WMS）；
+2. 通过 Python 的 FastAPI 库进行后端搭建，提供空间数据的查询API；
+3. 通过前端三件套（HTML+CSS+JS）和 Leaflet 组件完成前端交互地图网页的制作。
 
 ### 3.1 GeoServer 使用
 
@@ -113,7 +121,7 @@ GeoServer 最新版本要求系统预装 Java 11 或 17 。
 <img src="./images/java-test.png" alt="java-test" width="400"/>
 </div>
 
-##### Step 2. 运行 GeoServer
+##### Step 2. 安装 GeoServer
 
 从 [GeoServer 官网](https://geoserver.org/release/stable/) 下载 [Platform Independent Binary](https://sourceforge.net/projects/geoserver/files/GeoServer/2.26.0/geoserver-2.26.0-bin.zip) 压缩包。
 
@@ -127,19 +135,21 @@ GeoServer 最新版本要求系统预装 Java 11 或 17 。
 <img src="./images/GeoServer_Dir.png" alt="GeoServer_Dir" width="400"/>
 </div>
 
-直接双击 `geoserver-2.26.0-bin\bin` 文件夹下的 `startup.bat` 运行启动脚本并保持终端一直运行。
+##### Step 3. 运行 GeoServer
 
-> GeoServer 服务运行过程中，**终端需要一直保持运行**；关闭服务，则可以双击运行 `geoserver-2.26.0-bin\bin` 文件夹下的 `shutdown.bat` 脚本，或者直接关闭 `startup.bat` 打开的终端即可。
+直接双击 `geoserver\bin` 文件夹下的 `startup.bat` 运行启动脚本并保持终端一直运行。
 
-浏览器访问本地：`http://localhost:8080/geoserver`
+> GeoServer 服务运行过程中，**终端需要一直保持运行**；关闭服务，则可以双击运行 `geoserver\bin` 文件夹下的 `shutdown.bat` 脚本，或者直接关闭 `startup.bat` 的终端即可。
+
+运行终端后，浏览器访问本地 URL：`http://localhost:8080/geoserver`
 
 <div align="center">
 <img src="./images/GeoServer-Web.png" alt="GeoServer-Web" width="500"/>
 </div>
 
-进入该页面则成功。
+进入该欢迎页面则成功。
 
-用户的默认登陆账密为：
+在页面上方进行登录，用户的默认登陆账密为：
 
 - username: `admin`
 - password: `geoserver`
@@ -172,7 +182,7 @@ shp 文件选取了美国的 51 个一级行政区（来源：[Natural Earth » 
 <img src="./images/workspace.png" alt="workspace" width="500"/>
 </div>
 
-填入工作空间的名称和 URI：
+填入信息：
 
 - Name 填入工作空间名称：`us_states`
 - Namespace URI 填入 URL 地址：`http://localhost/us_states`
@@ -185,7 +195,7 @@ shp 文件选取了美国的 51 个一级行政区（来源：[Natural Earth » 
 
 ##### Step 3. Create a store
 
-通过 **Data > Stores > Add new store** 新建一个
+通过 **Data > Stores > Add new store** 新建一个 store ：
 
 <div align="center">
 <img src="./images/store.png" alt="store" width="500"/>
@@ -197,7 +207,7 @@ shp 文件选取了美国的 51 个一级行政区（来源：[Natural Earth » 
 <img src="./images/newVectorDataSource.png" alt="newVectorDataSource" width="400"/>
 </div>
 
-##### Step 3. Creating a layer
+##### Step 4. Creating a layer
 
 完成上一步后会自动跳转到下面的 New Layer 页面：
 
@@ -221,6 +231,8 @@ shp 文件选取了美国的 51 个一级行政区（来源：[Natural Earth » 
 <img src="./images/Layers.png" alt="Layers" width="500"/>
 </div>
 
+##### Step 5. Layer preview
+
 可以在 Layer Preview 中预览：
 
 <div align="center">
@@ -237,8 +249,7 @@ shp 文件选取了美国的 51 个一级行政区（来源：[Natural Earth » 
 
 参考 [教程 - 用户指南 - FastAPI](https://fastapi.tiangolo.com/zh/tutorial/) 构建基于 Python 的后端应用，完成：
 
-- 针对地图服务的请求转发：这里地图服务就以上面的 shp 为例。
-- 针对数据查询请求的响应：数据以 [US_cities_2022.csv](./Part2_Backend/US_cities_2022.csv) 为例（数据来源：[US cities 2022 | Kaggle](https://www.kaggle.com/datasets/frankschindler1/us-cities-2022-population-coordinates-etc)），将 csv 文件数据加载到后端内存中，完成数据查询 API 以模拟数据库查询操作。
+- 空间数据查询接口：数据以 [US_cities_2022.csv](./Part2_Backend/US_cities_2022.csv) 为例（数据来源：[US cities 2022 | Kaggle](https://www.kaggle.com/datasets/frankschindler1/us-cities-2022-population-coordinates-etc)），将 csv 文件数据加载到后端应用的运行内存中，完成数据查询 API ，这模拟了实际应用中的数据库查询操作。
 
 #### 3.2.1 Quick Start
 
@@ -261,7 +272,7 @@ async def root():
     return {"message": "Hello World"}
 ```
 
-通过命令行运行：
+通过**命令行**运行：
 
 ```bash
 uvicorn main:app --reload
@@ -273,7 +284,7 @@ uvicorn main:app --reload
 - `main:app`：在 `main.py` 文件中通过 `app = FastAPI()` 创建的对象；
 - `--reload`：使服务器在更新代码后重新启动（仅在开发时使用该选项）。
 
-如果希望直接运行 Python 文件来启动后端服务，则可以通过主函数调用 `uvicorn` 运行并设置相关参数：
+如果希望**直接运行 Python 文件**来启动后端服务，则可以通过主函数调用 `uvicorn` 运行，并设置相关参数：
 
 ```python
 import uvicorn
@@ -289,29 +300,77 @@ if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
 ```
 
-运行后，服务启动：
+运行服务后，终端会显示服务运行状态：
 
 <div align="center">
 <img src="./images/cmdRunUvicorn.png" alt="cmdRunUvicorn" width="500"/>
 </div>
 
-访问 [http://localhost:8000/](http://localhost:8000/) 得到：
+访问本地 URL： [http://localhost:8000/](http://localhost:8000/)
+
+得到：
 
 <div align="center">
 <img src="./images/fastapiHelloWorld.png" alt="fastapiHelloWorld" width="200"/>
 </div>
 
-在终端中键入 **CTRL+C** 停止运行。
+相关代码解释参考 [教程 - 用户指南 - FastAPI](https://fastapi.tiangolo.com/zh/tutorial/) 。
 
-#### 3.2.2 后端代码
+**终止程序**：在终端中键入 **CTRL+C** 停止运行。
+
+> 建议通过 **CTRL+C** 的方式停止程序，不然可能造成进程占用端口无法自动释放。
+
+#### 3.2.2 后端实现
 
 案例的后端代码，见：[backend.py](./Part2_Backend/backend.py)
 
+##### Step 1. 运行
+
+安装 [requirements.txt](./Part2_Backend/requirements.txt) 中的依赖。
+
+直接运行 [backend.py](./Part2_Backend/backend.py) ：
+
+<div align="center">
+<img src="./images/runBackend.png" alt="runBackend" width="500"/>
+</div>
+
+##### Step 2. 测试端口
+
+**另起一个终端**，运行 [testBackend.py](./Part2_Backend/testBackend.py) 文件：
+
+<div align="center">
+<img src="./images/testBackend.png" alt="testBackend" width="400"/>
+</div>
+
+输出内容的最后为 `All tests passed!` 则成功。
+
+> 注意，这里运行的终端一定要区分于 FastAPI 的后端终端。
+
 ### 3.3 Leaflet 前端
+
+> 注意，以下涉及 Leaflet 的案例代码均采用链接形式导入 Leaflet 组件库，需要开启代理。
+>
+> 如果想使用独立文件形式，则可以在 [Download - Leaflet - a JavaScript library for interactive maps](https://leafletjs.com/download.html) 下载。
+
+#### 3.3.1 Leaflet 入门
 
 Leaflet 入门，见：[Meteorite Landings Map: A Tiny Web Map Demo for Visualization - 少数派](https://sspai.com/post/93816)
 
+#### 3.3.2 前端实现
+
 案例的前端代码，见：[Part3_Frontend](./Part3_Frontend)
+
+直接使用浏览器打开 [index.html](./Part3_Frontend/index.html) 即可。当设备本地的 GeoServer 和 FastAPI 后端都正常运行使，打开 [index.html](./Part3_Frontend/index.html) 如下：
+
+<div align="center">
+<img src="./images/indexHTML.png" alt="indexHTML" width="500"/>
+</div>
+
+点击网页中 Control Panal 的按钮，可以 加载 / 移除 相关的图层；点击地图中城市的标记点，可以在 Information Panal 中显示对应的信息：
+
+<div align="center">
+<img src="./images/webShow.png" alt="webShow" width="500"/>
+</div>
 
 ## 4 拓展
 
