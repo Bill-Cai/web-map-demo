@@ -238,7 +238,7 @@ shp 文件选取了美国的 51 个一级行政区（来源：[Natural Earth » 
 参考 [教程 - 用户指南 - FastAPI](https://fastapi.tiangolo.com/zh/tutorial/) 构建基于 Python 的后端应用，完成：
 
 - 针对地图服务的请求转发：这里地图服务就以上面的 shp 为例。
-- 针对数据查询请求的响应：数据以 [US_cities_2022.csv](./Part2_Backend/US_cities_2022_Kaggle/US_cities_2022.csv) 为例，将 csv 文件数据加载到后端内存中，模拟数据库查询操作。
+- 针对数据查询请求的响应：数据以 [US_cities_2022.csv](./Part2_Backend/US_cities_2022.csv) 为例（数据来源：[US cities 2022 | Kaggle](https://www.kaggle.com/datasets/frankschindler1/us-cities-2022-population-coordinates-etc)），将 csv 文件数据加载到后端内存中，完成数据查询 API 以模拟数据库查询操作。
 
 #### 3.2.1 Quick Start
 
@@ -305,9 +305,13 @@ if __name__ == "__main__":
 
 #### 3.2.2 后端代码
 
-后端代码实现见：[backend.py](./Part2_Backend/backend.py)
+案例的后端代码，见：[backend.py](./Part2_Backend/backend.py)
 
 ### 3.3 Leaflet 前端
+
+Leaflet 入门，见：[Meteorite Landings Map: A Tiny Web Map Demo for Visualization - 少数派](https://sspai.com/post/93816)
+
+案例的前端代码，见：[Part3_Frontend](./Part3_Frontend)
 
 ## 4 拓展
 
