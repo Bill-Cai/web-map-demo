@@ -1,0 +1,5 @@
+Part1_GeoServer/*.zip
+Part1_GeoServer/US_states/*.cpg
+Part1_GeoServer/US_states/*.qmd
+
+*/__pycache__/*

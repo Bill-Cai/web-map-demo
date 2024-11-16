@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Map Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="sidebar">
+        <div id="controls">
+            <div align="center">Control Panel</div></br>
+            <div>
+                Load / Remove US States: <button onclick="loadGeoServerLayer()">Load</button> <button
+                    style="margin-left: 5px;" onclick="removeGeoServerLayer()">Remove</button>
+            </div>
+            <div>
+                Load City Points: <button onclick="loadCityPoints()">Load</button> <button style="margin-left: 5px;"
+                    onclick="clearMarkers()">Remove</button>
+            </div>
+            <div>
+                Clear Information: <button
+                    onclick="document.getElementById('info-content').innerHTML = ``">Clear</button>
+            </div>
+        </div>
+        <div id="info">
+            <div align="center">Information Panel</div>
+            <div id="info-content"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="scripts.js">
+    </script>
+</body>
+
+</html>
